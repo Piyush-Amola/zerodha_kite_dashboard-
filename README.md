@@ -79,7 +79,7 @@ The goal is to provide a visually similar and interactive simulation of the trad
 
 You can try the project live using the link below:
 
-👉 Live Demo – **Zerodha Kite Dashboard**
+👉 Live Demo – **(https://piyush-amola.github.io/zerodha_kite_dashboard-/)**
 
 ## 🧑‍💻 Default Login Details
 
