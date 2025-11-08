@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TradePro Dashboard</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Styles -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .scrollbar-thin {
+        scrollbar-width: thin;
+      }
+      .scrollbar-thin::-webkit-scrollbar {
+        width: 5px;
+      }
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: rgba(100, 100, 100, 0.4);
+        border-radius: 4px;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        min-width: 300px;
+      }
+      #orderModal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+
+  <body class="flex flex-col bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b px-4 py-2">
+      <div
+        class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0"
+      >
+        <!-- Top Row: Logo + Mobile Controls -->
+        <div class="flex items-center justify-between">
+          <!-- Logo -->
+          <div class="flex items-center space-x-2">
+            <img src="../images/logo.png" alt="Logo" class="h-10" />
+          </div>
+
+          <!-- Mobile Right Actions -->
+          <div class="flex items-center space-x-3 lg:hidden">
+            <!-- Notification -->
+            <button class="p-2 hover:bg-purple-50 rounded-lg">
+              <span class="material-icons">notifications</span>
+            </button>
+
+            <!-- User -->
+            <div id="userInfo" class="flex items-center space-x-2">
+              <img
+                src="https://as1.ftcdn.net/v2/jpg/02/01/33/54/1000_F_201335438_CNpY0iWaXXAV95Gj8BPB0tEJlMcxWeaZ.jpg"
+                alt="User"
+                class="w-8 h-8 rounded-full cursor-pointer"
+                id="userImage"
+              />
+              <span
+                id="userName"
+                class="hidden text-gray-700 font-medium transition-opacity duration-500"
+              ></span>
+            </div>
+
+            <!-- Sidebar Menu Button -->
+            <button
+              id="menuBtn"
+              class="p-2 rounded-lg border hover:bg-purple-50 focus:outline-none"
+            >
+              <span id="menuIcon" class="material-icons">menu</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Search & Market Info -->
+        <div
+          class="flex flex-col md:flex-row md:items-center md:space-x-4 w-full lg:w-auto"
+        >
+          <!-- Search -->
+          <input
+            type="text"
+            placeholder="Search symbol..."
+            id="searchInput"
+            class="px-4 py-2 border rounded-lg w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+
+          <!-- Market Info -->
+          <div class="hidden md:flex space-x-4 text-sm text-gray-600">
+            <span
+              >NIFTY 50:
+              <span class="text-green-600" id="niftyChange">--</span></span
+            >
+            <span
+              >SENSEX:
+              <span class="text-red-600" id="sensexChange">--</span></span
+            >
+          </div>
+        </div>
+
+        <!-- Desktop Right Actions -->
+        <div class="hidden lg:flex items-center space-x-4">
+          <button class="p-2 hover:bg-purple-50 rounded-lg">
+            <span class="material-icons">notifications</span>
+          </button>
+
+          <!-- User Info -->
+          <div id="userInfo" class="flex items-center space-x-2">
+            <img
+              src="https://as1.ftcdn.net/v2/jpg/02/01/33/54/1000_F_201335438_CNpY0iWaXXAV95Gj8BPB0tEJlMcxWeaZ.jpg"
+              alt="User"
+              class="w-8 h-8 rounded-full cursor-pointer"
+              id="userImage"
+            />
+            <span
+              id="userName"
+              class="text-gray-700 font-medium transition-opacity duration-500"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="flex flex-1 overflow-hidden relative">
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="w-60 bg-white border-r shadow-lg flex flex-col fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40"
+      >
+        <!-- Close button (mobile only) -->
+        <div
+          class="flex items-center justify-between md:hidden border-b px-4 py-2"
+        >
+          <h2 class="font-semibold text-gray-700">Menu</h2>
+          <button id="closeSidebar" class="text-gray-600">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-auto scrollbar-thin">
+          <ul class="space-y-1 mt-4">
+            <li>
+              <a
+                href="#"
+                class="flex items-center px-4 py-2 hover:bg-purple-100"
+              >
+                <span class="material-icons">dashboard</span>
+                <span class="ml-3">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center px-4 py-2 hover:bg-purple-100"
+              >
+                <span class="material-icons">trending_up</span>
+                <span class="ml-3">Markets</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center px-4 py-2 hover:bg-purple-100"
+              >
+                <span class="material-icons">list_alt</span>
+                <span class="ml-3">Orders</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center px-4 py-2 hover:bg-purple-100"
+              >
+                <span class="material-icons">assignment_turned_in</span>
+                <span class="ml-3">Positions</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center px-4 py-2 hover:bg-purple-100"
+              >
+                <span class="material-icons">folder_open</span>
+                <span class="ml-3">Holdings</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center px-4 py-2 hover:bg-purple-100"
+              >
+                <span class="material-icons">settings</span>
+                <span class="ml-3">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <button
+          id="logoutBtn"
+          class="m-4 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition"
+        >
+          Logout
+        </button>
+      </aside>
+
+      <!-- Main Section -->
+      <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+        <!-- Watchlist -->
+        <div
+          class="bg-white border-r overflow-auto scrollbar-thin w-full md:w-64 h-[50vh] md:h-full"
+        >
+          <div class="px-4 py-3 border-b flex justify-between items-center">
+            <h2 class="text-lg font-semibold">Watchlist</h2>
+            <button class="text-purple-600 font-bold text-lg">+</button>
+          </div>
+          <ul class="px-4 py-2 space-y-2 text-sm" id="watchlist"></ul>
+        </div>
+
+        <!-- Chart Section -->
+        <section class="flex-1 p-4 overflow-auto scrollbar-thin">
+          <div class="bg-white rounded-xl shadow-md p-4 flex flex-col h-full">
+            <div class="flex justify-between mb-3 items-center flex-wrap gap-2">
+              <h2 class="text-lg font-semibold" id="chartTitle">
+                Symbol Chart
+              </h2>
+              <button
+                id="placeOrderBtn"
+                class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+              >
+                Place Order
+              </button>
+            </div>
+
+            <div
+              class="flex-1 bg-gray-100 rounded-lg flex items-center justify-center"
+            >
+              <canvas id="symbolChart"></canvas>
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-4 text-center text-sm">
+              <div class="bg-white border rounded-lg p-2">
+                <p class="text-gray-500">Open</p>
+                <p class="font-semibold" id="openPrice">--</p>
+              </div>
+              <div class="bg-white border rounded-lg p-2">
+                <p class="text-gray-500">High</p>
+                <p class="font-semibold" id="highPrice">--</p>
+              </div>
+              <div class="bg-white border rounded-lg p-2">
+                <p class="text-gray-500">Low</p>
+                <p class="font-semibold" id="lowPrice">--</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Positions -->
+        <aside
+          class="block w-80 bg-white border-l overflow-auto scrollbar-thin"
+        >
+          <div class="px-4 py-3 border-b">
+            <h2 class="text-lg font-semibold">Positions</h2>
+          </div>
+          <ul class="px-4 py-2 space-y-3 text-sm" id="positions"></ul>
+          <div class="px-4 py-3 border-t">
+            <h2 class="text-lg font-semibold">Order Summary</h2>
+            <div class="text-sm text-gray-600 mt-2" id="summary"></div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer
+      class="h-10 bg-white border-t shadow-inner flex items-center justify-center text-sm text-gray-600"
+    >
+      Connection: <span class="ml-1 text-green-600">LIVE</span> | Updated:
+      <span id="updateTime" class="ml-1"></span>
+    </footer>
+
+    <!-- Script -->
+    <script src="../js/script.js"></script>
+  </body>
+</html>

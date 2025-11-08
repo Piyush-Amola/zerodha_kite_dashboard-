@@ -1,0 +1,19 @@
+{
+  "market": { "nifty": "+0.8%", "sensex": "-0.4%" },
+  "watchlist": [
+    { "symbol": "INFY", "change": "+1.2%" },
+    { "symbol": "TCS", "change": "-0.6%" },
+    { "symbol": "RELIANCE", "change": "+0.8%" },
+    { "symbol": "HDFCBANK", "change": "+0.5%" },
+    { "symbol": "ICICIBANK", "change": "-0.3%" },
+    { "symbol": "HINDUNILVR", "change": "+0.2%" },
+    { "symbol": "SBIN", "change": "-0.5%" }
+  ],
+  "positions": [
+    { "symbol": "INFY", "qty": 10, "avg": 1500, "pnl": "+200" },
+    { "symbol": "TCS", "qty": 5, "avg": 3200, "pnl": "-150" },
+    { "symbol": "TCS", "qty": 50, "avg": 3110, "pnl": "-650" },
+    { "symbol": "SBIN", "qty": 80, "avg": 592, "pnl": "+480" }
+  ],
+  "summary": { "totalPnL": "+50", "todayTrades": 3 }
+}
