@@ -15,7 +15,7 @@ The goal is to provide a visually similar and interactive simulation of the trad
   - Orders  
   - Holdings  
   - Positions  
-  - Funds  
+
   - Profile
 
 ### 2. Watchlist Panel
@@ -61,7 +61,7 @@ The goal is to provide a visually similar and interactive simulation of the trad
 
 1. **Download or Clone the Project**
    ```bash
-   git clone https://github.com/yourusername/zerodha-kite-dashboard.git
+   git clone (https://github.com/Piyush-Amola/zerodha_kite_dashboard-.git)
    ```
 
 2. **Open the Project Folder**
