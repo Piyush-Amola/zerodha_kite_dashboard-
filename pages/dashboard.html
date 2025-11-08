@@ -269,7 +269,7 @@
               <canvas id="symbolChart"></canvas>
             </div>
 
-            <div class="mt-4 grid grid-cols-3 gap-4 text-center text-sm">
+            <div class="mt-4 grid grid-cols-3 gap-4 text-center text-sm ">
               <div class="bg-white border rounded-lg p-2">
                 <p class="text-gray-500">Open</p>
                 <p class="font-semibold" id="openPrice">--</p>
@@ -288,7 +288,7 @@
 
         <!-- Positions -->
         <aside
-          class="block w-80 bg-white border-l overflow-auto scrollbar-thin"
+          class="block bg-white border-l overflow-auto scrollbar-thin w-full lg:w-80
         >
           <div class="px-4 py-3 border-b">
             <h2 class="text-lg font-semibold">Positions</h2>
@@ -310,7 +310,49 @@
       <span id="updateTime" class="ml-1"></span>
     </footer>
 
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal flex">
+      <div class="modal-content">
+        <h2 class="text-lg font-semibold mb-4">Place Order</h2>
+        <label class="block mb-2">Symbol</label>
+        <select
+          id="orderSymbol"
+          class="w-full border px-2 py-1 rounded mb-2"
+        ></select>
+        <label class="block mb-2">Quantity</label>
+        <input
+          type="number"
+          id="orderQty"
+          class="w-full border px-2 py-1 rounded mb-2"
+        />
+        <label class="block mb-2">Limit Price</label>
+        <input
+          type="number"
+          id="orderPrice"
+          class="w-full border px-2 py-1 rounded mb-4"
+        />
+        <div class="flex justify-end space-x-2">
+          <button
+            id="buyBtn"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Buy
+          </button>
+          <button
+            id="sellBtn"
+            class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            Sell
+          </button>
+          <button id="closeModal" class="px-4 py-2 border rounded">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Script -->
     <script src="../js/script.js"></script>
   </body>
 </html>
+
